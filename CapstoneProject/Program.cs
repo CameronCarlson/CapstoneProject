@@ -56,7 +56,6 @@ namespace CapstoneProject
 
             DisplayWelcomeScreen();
             List<string> phrase = null;
-            List<string> guess = null;
             phrase = DisplayGetPhraseFromUser();
             DisplayStartGame(phrase);
             DisplayClosingScreen();
@@ -80,10 +79,13 @@ namespace CapstoneProject
                 DisplayScreenHeader("Start Game");
 
                 //
-                // Check to see if the game is finished
+                // Check to see if they lost
                 //
                 if (mistakes == 6)
                 {
+                    Console.Clear();
+                    DisplayScreenHeader("Start Game");
+                    
                     finishedGame = true;
                     Console.WriteLine();
                     Console.WriteLine("\t\tLooks like you lost this time.");
@@ -101,7 +103,7 @@ namespace CapstoneProject
                 //
                 // Blank Spaces and letters guessed
                 //
-                finishedGame = DisplayBlankSpacesAndCorrectGuesses(guesses, phrase);
+                finishedGame = DisplayBlankSpacesAndCorrectGuesses(guesses, phrase, finishedGame);
 
                 //
                 // Draw Hangman
@@ -113,10 +115,14 @@ namespace CapstoneProject
                 //
                 DisplayRepeatLettersGuessed(guesses);
 
-                if (finishedGame == true)
+                //
+                // Check to see if they won
+                //
+                if (finishedGame)
                 {
                     break;
                 }
+
                 //
                 // get guess from user and validate it
                 //
@@ -132,8 +138,11 @@ namespace CapstoneProject
 
             } while (!finishedGame);
 
-            Console.WriteLine();
-            Console.WriteLine("\t\tCongratulations! You Won The Game!");
+            if (mistakes != 6)
+            {
+                Console.WriteLine();
+                Console.WriteLine("\t\tCongratulations! You Won The Game!");
+            }
             DisplayContinuePrompt();
         }
 
@@ -158,10 +167,9 @@ namespace CapstoneProject
         /// <param name="guesses"></param>
         /// <param name="phrase"></param>
         /// <returns></returns>
-        static bool DisplayBlankSpacesAndCorrectGuesses(List<string> guesses, List<string> phrase)
+        static bool DisplayBlankSpacesAndCorrectGuesses(List<string> guesses, List<string> phrase, bool finishedGame)
         {
             int strikes = 0;
-            bool finishedGame = false;
             string letterGuess;
             int lettersWrong = phrase.Count();
 
