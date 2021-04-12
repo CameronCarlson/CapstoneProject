@@ -121,6 +121,9 @@ namespace CapstoneProject
                     }
                 }
 
+                DisplayContinuePrompt();
+
+                Console.Clear();
             } while (!finishedGame);
 
             DisplayContinuePrompt();
@@ -133,10 +136,10 @@ namespace CapstoneProject
         static void DisplayRepeatLettersGuessed(List<string> guesses)
         {
             Console.WriteLine();
+            Console.Write("\tLetters Guessed: ");
             foreach (string guess in guesses)
             {
-                Console.Write("\tLetters Guessed:");
-                Console.WriteLine(" | " + guess + " | ");
+                Console.Write(guess + " | ");
             }
             Console.WriteLine();
         }
@@ -197,11 +200,11 @@ namespace CapstoneProject
                     if (letter == " ")
                     {
                         Console.Write(" ");
+                        lettersWrong--;
                     }
                     else if (strikes == phrase.Count)
                     {
                         Console.Write("-");
-                        lettersWrong--;
                     }
                     else if (strikes < phrase.Count)
                     {
@@ -265,7 +268,7 @@ namespace CapstoneProject
                             }
                         }
 
-                        if (strikes != 0)
+                        if (strikes == 0)
                         {
                             guesses.Add(letter.ToString());
                         }
