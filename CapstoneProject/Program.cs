@@ -60,6 +60,10 @@ namespace CapstoneProject
             DisplayClosingScreen();
         }
 
+        /// <summary>
+        /// Start Game Display
+        /// </summary>
+        /// <param name="phrase"></param>
         static void DisplayStartGame(List<string> phrase)
         {
             string userRepsonse;
@@ -68,38 +72,33 @@ namespace CapstoneProject
             int mistakes;
             Alphabet letter;
             List<string> guesses = new List<string>();
-            DisplayScreenHeader("Start Game");
 
             //
             // repeat guessing until they guessed the word, or they lost
             //
             do
             {
+                DisplayScreenHeader("Start Game");
+
+                //
+                // Blank Spaces and letters guessed
+                //
+                finishedGame = DisplayBlankSpacesAndCorrectGuesses(guesses, phrase);
+
                 //
                 // get guess from user and validate it
                 //
-                do
-                {
-                    validGuess = true;
-                    Console.Write("\tGuess Letter: ");
-                    userRepsonse = Console.ReadLine().ToUpper();
-                    if (int.TryParse(userRepsonse, out int integerGuess))
-                    {
-                        validGuess = false;
-                        Console.WriteLine("\tPlease enter a valid guess");
-                    }
-                    else if (Enum.TryParse(userRepsonse, out letter))
-                    {
-                        guesses.Add(letter.ToString());
-                    }
-                    else
-                    {
-                        validGuess = false;
-                        Console.WriteLine("\tPlease enter a valid guess");
-                    }
-                } while (!validGuess);
+                guesses = DisplayValidateUserGuess();
 
+                //
+                // Check if letter guessed is in the word/phrase
+                //
                 mistakes = DisplayCheckGuessForMistakes(guesses, phrase);
+
+                //
+                // Draw Hangman
+                //
+                DisplayDrawHangman(mistakes);
 
                 //
                 // Check to see if the game is finished
@@ -119,6 +118,78 @@ namespace CapstoneProject
             } while (!finishedGame);
 
             DisplayContinuePrompt();
+        }
+
+        static bool DisplayBlankSpacesAndCorrectGuesses(List<string> guesses, List<string> phrase)
+        {
+            int strikes = 0;
+            bool finishedGame = false;
+            string letterGuess;
+
+            foreach (string guess in guesses)
+            {
+                letterGuess = guess;
+                foreach (string letter in phrase)
+                {
+                    if (guess != letter)
+                    {
+                        strikes++;
+                    }
+                }
+                strikes = 0;
+                foreach (string character in phrase)
+                {
+                    if (character == " ")
+                    {
+                        Console.Write(" ");
+                    }
+                    else if (strikes == phrase.Count)
+                    {
+                        Console.Write("_");
+                    }
+                    else if (strikes < phrase.Count)
+                    {
+                        Console.Write(letterGuess);
+                    }
+                }
+            }
+
+            return finishedGame;
+        }
+
+        /// <summary>
+        /// Get guess from user and validate it.
+        /// </summary>
+        /// <returns></returns>
+        static List<string> DisplayValidateUserGuess()
+        {
+            string userResponse;
+            Alphabet letter;
+            bool validGuess;
+            List<string> guesses = new List<string>();
+
+            do
+            {
+                validGuess = true;
+                Console.Write("\tGuess Letter: ");
+                userResponse = Console.ReadLine().ToUpper();
+                if (int.TryParse(userResponse, out int integerGuess))
+                {
+                    validGuess = false;
+                    Console.WriteLine("\tPlease enter a valid guess");
+                }
+                else if (Enum.TryParse(userResponse, out letter))
+                {
+                    guesses.Add(letter.ToString());
+                }
+                else
+                {
+                    validGuess = false;
+                    Console.WriteLine("\tPlease enter a valid guess");
+                }
+            } while (!validGuess);
+
+            return guesses;
         }
 
         /// <summary>
@@ -146,8 +217,6 @@ namespace CapstoneProject
                 }
                 strikes = 0;
             }
-
-            DisplayDrawHangman(mistakes);
 
             return mistakes;
         }
@@ -319,6 +388,7 @@ namespace CapstoneProject
             Console.WriteLine("                  |        ");
             Console.WriteLine("                  |        ");
             Console.WriteLine("       ___________|______        ");
+            Console.ForegroundColor = ConsoleColor.DarkBlue;
 
             DisplayContinuePrompt();
         }
@@ -337,6 +407,7 @@ namespace CapstoneProject
             Console.WriteLine("                  |        ");
             Console.WriteLine("                  |        ");
             Console.WriteLine("       ___________|______        ");
+            Console.ForegroundColor = ConsoleColor.DarkBlue;
 
             DisplayContinuePrompt();
         }
@@ -355,6 +426,7 @@ namespace CapstoneProject
             Console.WriteLine("                  |        ");
             Console.WriteLine("                  |        ");
             Console.WriteLine("       ___________|______        ");
+            Console.ForegroundColor = ConsoleColor.DarkBlue;
 
             DisplayContinuePrompt();
         }
@@ -373,6 +445,7 @@ namespace CapstoneProject
             Console.WriteLine("                  |        ");
             Console.WriteLine("                  |        ");
             Console.WriteLine("       ___________|______        ");
+            Console.ForegroundColor = ConsoleColor.DarkBlue;
 
             DisplayContinuePrompt();
         }
@@ -391,6 +464,7 @@ namespace CapstoneProject
             Console.WriteLine("                  |        ");
             Console.WriteLine("                  |        ");
             Console.WriteLine("       ___________|______        ");
+            Console.ForegroundColor = ConsoleColor.DarkBlue;
 
             DisplayContinuePrompt();
         }
@@ -409,6 +483,7 @@ namespace CapstoneProject
             Console.WriteLine("      /           |        ");
             Console.WriteLine("                  |        ");
             Console.WriteLine("       ___________|______        ");
+            Console.ForegroundColor = ConsoleColor.DarkBlue;
 
             DisplayContinuePrompt();
         }
@@ -427,6 +502,7 @@ namespace CapstoneProject
             Console.WriteLine("      /   \\       |        ");
             Console.WriteLine("                  |        ");
             Console.WriteLine("       ___________|______        ");
+            Console.ForegroundColor = ConsoleColor.DarkBlue;
 
             DisplayContinuePrompt();
         }
