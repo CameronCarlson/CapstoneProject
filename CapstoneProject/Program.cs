@@ -134,11 +134,13 @@ namespace CapstoneProject
         /// <param name="guesses"></param>
         static void DisplayRepeatLettersGuessed(List<string> guesses)
         {
+            Console.WriteLine();
             foreach (string guess in guesses)
             {
-                Console.Write("Letters Guessed: ");
-                Console.WriteLine("| " + guess + "| ");
+                Console.Write("\tLetters Guessed:");
+                Console.WriteLine(" | " + guess + " | ");
             }
+            Console.WriteLine();
         }
 
         /// <summary>
@@ -154,6 +156,26 @@ namespace CapstoneProject
             string letterGuess;
             int lettersWrong = phrase.Count();
 
+            //
+            // Rewrite phrase with Dashes the first time only
+            //
+            if (guesses.Count() == 0)
+            {
+                Console.Write("\t");
+                foreach (string letter in phrase)
+                {
+                    if (letter == " ")
+                    {
+                        Console.Write(" ");
+                    }
+                    else if (letter != " ")
+                    {
+                        Console.Write("-");
+                    }
+                }
+                Console.WriteLine();
+            }
+
             foreach (string guess in guesses)
             {
                 //
@@ -167,11 +189,11 @@ namespace CapstoneProject
                         strikes++;
                     }
                 }
-                strikes = 0;
 
                 //
                 // Rewrite phrase with letters
                 //
+                Console.Write("\t");
                 foreach (string letter in phrase)
                 {
                     if (letter == " ")
@@ -180,15 +202,24 @@ namespace CapstoneProject
                     }
                     else if (strikes == phrase.Count)
                     {
-                        Console.Write("_");
+                        Console.Write("-");
                         lettersWrong--;
                     }
                     else if (strikes < phrase.Count)
                     {
-                        Console.Write(letterGuess);
-                        lettersWrong--;
+                        if (letter == letterGuess)
+                        {
+                            Console.Write(letterGuess);
+                            lettersWrong--;
+                        }
+                        else
+                        {
+                            Console.Write("-");
+                        }
                     }
                 }
+                Console.WriteLine();
+                strikes = 0;
 
                 if (lettersWrong == 0)
                 {
@@ -222,23 +253,29 @@ namespace CapstoneProject
                 }
                 else if (Enum.TryParse(userResponse, out letter))
                 {
-                    foreach (string guess in guesses)
-                    {
-                        if (guess != letter.ToString())
-                        {
-                            strikes--;
-                        }
-                    }
-
-                    if (strikes != 0)
+                    if (guesses.Count() == 0)
                     {
                         guesses.Add(letter.ToString());
                     }
                     else
                     {
-                        Console.WriteLine("\tLetter has already been guessed. Please guess another letter");
+                        foreach (string guess in guesses)
+                        {
+                            if (guess != letter.ToString())
+                            {
+                                strikes--;
+                            }
+                        }
+
+                        if (strikes != 0)
+                        {
+                            guesses.Add(letter.ToString());
+                        }
+                        else
+                        {
+                            Console.WriteLine("\tLetter has already been guessed. Please guess another letter");
+                        }
                     }
-                    
                 }
                 else
                 {
