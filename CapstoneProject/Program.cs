@@ -157,75 +157,43 @@ namespace CapstoneProject
             string letterGuess;
             int lettersWrong = phrase.Count();
 
-            //
-            // Rewrite phrase with Dashes the first time only
-            //
-            if (guesses.Count() == 0)
+            Console.Write("\t");
+            foreach (string letter in phrase)
             {
-                Console.Write("\t");
-                foreach (string letter in phrase)
-                {
-                    if (letter == " ")
-                    {
-                        Console.Write(" ");
-                    }
-                    else if (letter != " ")
-                    {
-                        Console.Write("-");
-                    }
-                }
-                Console.WriteLine();
-            }
-
-            foreach (string guess in guesses)
-            {
-                //
-                // Determine if letter in in phrase
-                //
-                letterGuess = guess;
-                foreach (string letter in phrase)
+                foreach (string guess in guesses)
                 {
                     if (guess != letter)
                     {
                         strikes++;
                     }
+                    else
+                    {
+                        break;
+                    }
                 }
+                letterGuess = letter;
 
-                //
-                // Rewrite phrase with letters
-                //
-                Console.Write("\t");
-                foreach (string letter in phrase)
+                if (letter == " ")
                 {
-                    if (letter == " ")
-                    {
-                        Console.Write(" ");
-                        lettersWrong--;
-                    }
-                    else if (strikes == phrase.Count)
-                    {
-                        Console.Write("-");
-                    }
-                    else if (strikes < phrase.Count)
-                    {
-                        if (letter == letterGuess)
-                        {
-                            Console.Write(letterGuess);
-                            lettersWrong--;
-                        }
-                        else
-                        {
-                            Console.Write("-");
-                        }
-                    }
+                    Console.Write(" ");
+                    lettersWrong--;
                 }
-                Console.WriteLine();
+                else if (strikes == guesses.Count())
+                {
+                    Console.Write("-");
+                }
+                else if (strikes < guesses.Count())
+                {
+                    Console.Write(letterGuess);
+                    lettersWrong--;
+                }
                 strikes = 0;
+            }
+            Console.WriteLine();
 
-                if (lettersWrong == 0)
-                {
-                    finishedGame = true;
-                }
+            if (lettersWrong == 0)
+            {
+                finishedGame = true;
             }
 
             return finishedGame;
