@@ -66,11 +66,8 @@ namespace CapstoneProject
         /// <param name="phrase"></param>
         static void DisplayStartGame(List<string> phrase)
         {
-            string userRepsonse;
-            bool validGuess;
             bool finishedGame = false;
             int mistakes;
-            Alphabet letter;
             List<string> guesses = new List<string>();
 
             //
