@@ -8,6 +8,7 @@ namespace CapstoneProject
 {
     public enum Alphabet
     {
+        NONE,
         A,
         B,
         C,
@@ -79,6 +80,25 @@ namespace CapstoneProject
                 DisplayScreenHeader("Start Game");
 
                 //
+                // Check to see if the game is finished
+                //
+                if (mistakes == 6)
+                {
+                    finishedGame = true;
+                    Console.WriteLine();
+                    Console.WriteLine("\t\tLooks like you lost this time.");
+                    Console.WriteLine();
+                    Console.Write("\t\tThe Word/Phrase was: ");
+                    foreach (string character in phrase)
+                    {
+                        Console.Write($"{character}");
+                    }
+                    Console.WriteLine();
+                    Console.WriteLine();
+                    Console.WriteLine();
+                }
+
+                //
                 // Blank Spaces and letters guessed
                 //
                 finishedGame = DisplayBlankSpacesAndCorrectGuesses(guesses, phrase);
@@ -93,40 +113,28 @@ namespace CapstoneProject
                 //
                 DisplayRepeatLettersGuessed(guesses);
 
-                if (finishedGame != true)
+                if (finishedGame == true)
                 {
-                    //
-                    // get guess from user and validate it
-                    //
-                    guesses = DisplayValidateUserGuess(guesses);
-
-                    //
-                    // Check if letter guessed is in the word/phrase
-                    //
-                    mistakes = DisplayCheckGuessForMistakes(guesses, phrase);
-
-                    //
-                    // Check to see if the game is finished
-                    //
-                    if (mistakes == 6)
-                    {
-                        finishedGame = true;
-                        Console.WriteLine();
-                        Console.WriteLine("Looks like you lost this time.");
-                        Console.WriteLine();
-                        Console.Write("The Word/Phrase was: ");
-                        foreach (string character in phrase)
-                        {
-                            Console.Write($"{character}");
-                        }
-                    }
+                    break;
                 }
+                //
+                // get guess from user and validate it
+                //
+                guesses = DisplayValidateUserGuess(guesses);
 
-                Console.WriteLine("\t\tCongratulations! You Won The Game!");
+                //
+                // Check if letter guessed is in the word/phrase
+                //
+                mistakes = DisplayCheckGuessForMistakes(guesses, phrase);
+
                 DisplayContinuePrompt();
-
                 Console.Clear();
+
             } while (!finishedGame);
+
+            Console.WriteLine();
+            Console.WriteLine("\t\tCongratulations! You Won The Game!");
+            DisplayContinuePrompt();
         }
 
         /// <summary>
@@ -335,11 +343,15 @@ namespace CapstoneProject
         {
             string userResponse;
             bool validResponse;
+            int badCharacter;
             List<string> phrase = new List<string>();
             DisplayScreenHeader("Word/Phrase");
 
             Console.WriteLine();
-            Console.Write("\tEnter a word or phrase: ");
+            Console.WriteLine("\tEnter a word or phrase. ");
+            Console.WriteLine("\tNote: Characters other then letters will be automatically removed.");
+            Console.WriteLine();
+            Console.Write("\tWord/Phrase: ");
             do
             {
                 validResponse = true;
@@ -352,7 +364,7 @@ namespace CapstoneProject
             char[] characters = userResponse.ToCharArray();
             foreach (char character in characters)
             {
-                if (Enum.TryParse(character.ToString(), out Alphabet letter))
+                if (Enum.TryParse(character.ToString(), out Alphabet letter) && !int.TryParse(character.ToString(), out badCharacter))
                 {
                     phrase.Add(letter.ToString());
                 }
