@@ -86,32 +86,40 @@ namespace CapstoneProject
                 finishedGame = DisplayBlankSpacesAndCorrectGuesses(guesses, phrase);
 
                 //
-                // get guess from user and validate it
+                // Repeat Letters Guessed
                 //
-                guesses = DisplayValidateUserGuess();
+                DisplayRepeatLettersGuessed(guesses);
 
-                //
-                // Check if letter guessed is in the word/phrase
-                //
-                mistakes = DisplayCheckGuessForMistakes(guesses, phrase);
-
-                //
-                // Draw Hangman
-                //
-                DisplayDrawHangman(mistakes);
-
-                //
-                // Check to see if the game is finished
-                //
-                if (mistakes == 6)
+                if (finishedGame != true)
                 {
-                    finishedGame = true;
-                    Console.WriteLine();
-                    Console.WriteLine("Looks like you lost this time.");
-                    Console.Write("The Word/Phrase was: ");
-                    foreach (string character in phrase)
+                    //
+                    // get guess from user and validate it
+                    //
+                    guesses = DisplayValidateUserGuess(guesses);
+
+                    //
+                    // Check if letter guessed is in the word/phrase
+                    //
+                    mistakes = DisplayCheckGuessForMistakes(guesses, phrase);
+
+                    //
+                    // Draw Hangman
+                    //
+                    DisplayDrawHangman(mistakes);
+
+                    //
+                    // Check to see if the game is finished
+                    //
+                    if (mistakes == 6)
                     {
-                        Console.Write($"{character}");
+                        finishedGame = true;
+                        Console.WriteLine();
+                        Console.WriteLine("Looks like you lost this time.");
+                        Console.Write("The Word/Phrase was: ");
+                        foreach (string character in phrase)
+                        {
+                            Console.Write($"{character}");
+                        }
                     }
                 }
 
@@ -120,14 +128,37 @@ namespace CapstoneProject
             DisplayContinuePrompt();
         }
 
+        /// <summary>
+        /// Repeat Letters Guessed Back To User
+        /// </summary>
+        /// <param name="guesses"></param>
+        static void DisplayRepeatLettersGuessed(List<string> guesses)
+        {
+            foreach (string guess in guesses)
+            {
+                Console.Write("Letters Guessed: ");
+                Console.WriteLine("| " + guess + "| ");
+            }
+        }
+
+        /// <summary>
+        /// Write the Phrase with blanks and letters guest
+        /// </summary>
+        /// <param name="guesses"></param>
+        /// <param name="phrase"></param>
+        /// <returns></returns>
         static bool DisplayBlankSpacesAndCorrectGuesses(List<string> guesses, List<string> phrase)
         {
             int strikes = 0;
             bool finishedGame = false;
             string letterGuess;
+            int lettersWrong = phrase.Count();
 
             foreach (string guess in guesses)
             {
+                //
+                // Determine if letter in in phrase
+                //
                 letterGuess = guess;
                 foreach (string letter in phrase)
                 {
@@ -137,20 +168,31 @@ namespace CapstoneProject
                     }
                 }
                 strikes = 0;
-                foreach (string character in phrase)
+
+                //
+                // Rewrite phrase with letters
+                //
+                foreach (string letter in phrase)
                 {
-                    if (character == " ")
+                    if (letter == " ")
                     {
                         Console.Write(" ");
                     }
                     else if (strikes == phrase.Count)
                     {
                         Console.Write("_");
+                        lettersWrong--;
                     }
                     else if (strikes < phrase.Count)
                     {
                         Console.Write(letterGuess);
+                        lettersWrong--;
                     }
+                }
+
+                if (lettersWrong == 0)
+                {
+                    finishedGame = true;
                 }
             }
 
@@ -161,12 +203,12 @@ namespace CapstoneProject
         /// Get guess from user and validate it.
         /// </summary>
         /// <returns></returns>
-        static List<string> DisplayValidateUserGuess()
+        static List<string> DisplayValidateUserGuess(List<string> guesses)
         {
             string userResponse;
             Alphabet letter;
             bool validGuess;
-            List<string> guesses = new List<string>();
+            int strikes = guesses.Count();
 
             do
             {
@@ -180,7 +222,23 @@ namespace CapstoneProject
                 }
                 else if (Enum.TryParse(userResponse, out letter))
                 {
-                    guesses.Add(letter.ToString());
+                    foreach (string guess in guesses)
+                    {
+                        if (guess != letter.ToString())
+                        {
+                            strikes--;
+                        }
+                    }
+
+                    if (strikes != 0)
+                    {
+                        guesses.Add(letter.ToString());
+                    }
+                    else
+                    {
+                        Console.WriteLine("\tLetter has already been guessed. Please guess another letter");
+                    }
+                    
                 }
                 else
                 {
