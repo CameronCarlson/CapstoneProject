@@ -51,6 +51,7 @@ namespace CapstoneProject
         {
             Console.ForegroundColor = ConsoleColor.DarkBlue;
             Console.BackgroundColor = ConsoleColor.Gray;
+            Console.CursorVisible = true;
 
             DisplayWelcomeScreen();
             List<string> phrase = null;
@@ -67,7 +68,7 @@ namespace CapstoneProject
         static void DisplayStartGame(List<string> phrase)
         {
             bool finishedGame = false;
-            int mistakes;
+            int mistakes = 0;
             List<string> guesses = new List<string>();
 
             //
@@ -81,6 +82,11 @@ namespace CapstoneProject
                 // Blank Spaces and letters guessed
                 //
                 finishedGame = DisplayBlankSpacesAndCorrectGuesses(guesses, phrase);
+
+                //
+                // Draw Hangman
+                //
+                DisplayDrawHangman(mistakes);
 
                 //
                 // Repeat Letters Guessed
@@ -98,11 +104,6 @@ namespace CapstoneProject
                     // Check if letter guessed is in the word/phrase
                     //
                     mistakes = DisplayCheckGuessForMistakes(guesses, phrase);
-
-                    //
-                    // Draw Hangman
-                    //
-                    DisplayDrawHangman(mistakes);
 
                     //
                     // Check to see if the game is finished
@@ -481,8 +482,6 @@ namespace CapstoneProject
             Console.WriteLine("                  |        ");
             Console.WriteLine("       ___________|______        ");
             Console.ForegroundColor = ConsoleColor.DarkBlue;
-
-            DisplayContinuePrompt();
         }
 
         static void DisplayHangman1Mistakes()
@@ -500,8 +499,6 @@ namespace CapstoneProject
             Console.WriteLine("                  |        ");
             Console.WriteLine("       ___________|______        ");
             Console.ForegroundColor = ConsoleColor.DarkBlue;
-
-            DisplayContinuePrompt();
         }
 
         static void DisplayHangman2Mistakes()
@@ -519,8 +516,6 @@ namespace CapstoneProject
             Console.WriteLine("                  |        ");
             Console.WriteLine("       ___________|______        ");
             Console.ForegroundColor = ConsoleColor.DarkBlue;
-
-            DisplayContinuePrompt();
         }
 
         static void DisplayHangman3Mistakes()
@@ -538,8 +533,6 @@ namespace CapstoneProject
             Console.WriteLine("                  |        ");
             Console.WriteLine("       ___________|______        ");
             Console.ForegroundColor = ConsoleColor.DarkBlue;
-
-            DisplayContinuePrompt();
         }
 
         static void DisplayHangman4Mistakes()
@@ -557,8 +550,6 @@ namespace CapstoneProject
             Console.WriteLine("                  |        ");
             Console.WriteLine("       ___________|______        ");
             Console.ForegroundColor = ConsoleColor.DarkBlue;
-
-            DisplayContinuePrompt();
         }
 
         static void DisplayHangman5Mistakes()
@@ -576,8 +567,6 @@ namespace CapstoneProject
             Console.WriteLine("                  |        ");
             Console.WriteLine("       ___________|______        ");
             Console.ForegroundColor = ConsoleColor.DarkBlue;
-
-            DisplayContinuePrompt();
         }
 
         static void DisplayHangman6Mistakes()
@@ -595,8 +584,6 @@ namespace CapstoneProject
             Console.WriteLine("                  |        ");
             Console.WriteLine("       ___________|______        ");
             Console.ForegroundColor = ConsoleColor.DarkBlue;
-
-            DisplayContinuePrompt();
         }
 
         #endregion
