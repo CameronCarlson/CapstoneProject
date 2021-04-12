@@ -113,6 +113,7 @@ namespace CapstoneProject
                         finishedGame = true;
                         Console.WriteLine();
                         Console.WriteLine("Looks like you lost this time.");
+                        Console.WriteLine();
                         Console.Write("The Word/Phrase was: ");
                         foreach (string character in phrase)
                         {
@@ -121,12 +122,11 @@ namespace CapstoneProject
                     }
                 }
 
+                Console.WriteLine("\t\tCongratulations! You Won The Game!");
                 DisplayContinuePrompt();
 
                 Console.Clear();
             } while (!finishedGame);
-
-            DisplayContinuePrompt();
         }
 
         /// <summary>
