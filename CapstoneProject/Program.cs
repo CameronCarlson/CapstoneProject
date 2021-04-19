@@ -215,6 +215,10 @@ namespace CapstoneProject
             int lettersWrong = phrase.Count();
 
             Console.Write("\t");
+
+            //
+            // compare each letter in phrase to each letter guessed
+            //
             foreach (string letter in phrase)
             {
                 foreach (string guess in guesses)
@@ -230,6 +234,9 @@ namespace CapstoneProject
                 }
                 letterGuess = letter;
 
+                //
+                // Write out word/phrase with dashes and letters guessed
+                //
                 if (letter == " ")
                 {
                     Console.Write(" ");
@@ -247,7 +254,9 @@ namespace CapstoneProject
                 strikes = 0;
             }
             Console.WriteLine();
-
+            //
+            // if no letters are wrong, the user wins
+            //
             if (lettersWrong == 0)
             {
                 finishedGame = true;
@@ -272,17 +281,29 @@ namespace CapstoneProject
                 validGuess = true;
                 Console.Write("\tGuess Letter: ");
                 userResponse = Console.ReadLine().ToUpper();
+                //
+                // check to see if guess is a number
+                //
                 if (int.TryParse(userResponse, out int integerGuess))
                 {
                     validGuess = false;
                     Console.WriteLine("\tPlease enter a valid guess");
                 }
+                //
+                // Check to see if guess is a letter
+                //
                 else if (Enum.TryParse(userResponse, out letter))
                 {
+                    //
+                    // if first guess add letter
+                    //
                     if (guesses.Count() == 0)
                     {
                         guesses.Add(letter.ToString());
                     }
+                    //
+                    // check to see if guess is repeated
+                    //
                     else
                     {
                         foreach (string guess in guesses)
@@ -403,25 +424,47 @@ namespace CapstoneProject
             Console.Write("\tWord/Phrase: ");
             do
             {
-                validResponse = true;
-                userResponse = Console.ReadLine().ToUpper();
-                if (userResponse == "")
+                //
+                // Get word/phrase from user
+                //
+                do
+                {
+                    validResponse = true;
+                    userResponse = Console.ReadLine().ToUpper();
+                    if (userResponse == "")
+                    {
+                        validResponse = false;
+                    }
+                } while (!validResponse);
+
+                //
+                // Separate word/phrase into an array of individual characters
+                //
+                char[] characters = userResponse.ToCharArray();
+
+                //
+                // get character array into a list of strings and separate unwanted characters using an alphabet enum
+                //
+                foreach (char character in characters)
+                {
+                    if (Enum.TryParse(character.ToString(), out Alphabet letter) && !int.TryParse(character.ToString(), out badCharacter))
+                    {
+                        phrase.Add(letter.ToString());
+                    }
+                    else if (character.ToString() == " ")
+                    {
+                        phrase.Add(character.ToString());
+                    }
+                }
+
+                //
+                // check to see if phrase consisted of only unwanted characters
+                //
+                if (phrase.Count == 0)
                 {
                     validResponse = false;
                 }
             } while (!validResponse);
-            char[] characters = userResponse.ToCharArray();
-            foreach (char character in characters)
-            {
-                if (Enum.TryParse(character.ToString(), out Alphabet letter) && !int.TryParse(character.ToString(), out badCharacter))
-                {
-                    phrase.Add(letter.ToString());
-                }
-                else if (character.ToString() == " ")
-                {
-                    phrase.Add(character.ToString());
-                }
-            }
 
             DisplayContinuePrompt();
 
