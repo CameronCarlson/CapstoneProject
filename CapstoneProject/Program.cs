@@ -61,9 +61,9 @@ namespace CapstoneProject
                 List<string> phrase = null;
                 phrase = DisplayGetPhraseFromUser();
                 DisplayStartGame(phrase);
-                DisplayClosingScreen();
                 isDone = DisplayAskToPlayAgain();
-            } while (isDone);
+            } while (!isDone);
+            DisplayClosingScreen();
         }
 
         /// <summary>
@@ -77,7 +77,7 @@ namespace CapstoneProject
             bool validResponse;
             DisplayScreenHeader("Play Again?");
             Console.WriteLine();
-            Console.WriteLine("Do you want to play again? [yes or no]");
+            Console.Write("\tDo you want to play again? [yes or no]: ");
             do
             {
                 validResponse = true;
@@ -92,7 +92,7 @@ namespace CapstoneProject
                 }
                 else
                 {
-                    Console.WriteLine("\tPlease enter Yes or No");
+                    Console.Write("\tPlease enter Yes or No: ");
                     validResponse = false;
                 }
             } while (!validResponse);
