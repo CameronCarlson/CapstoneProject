@@ -43,7 +43,7 @@ namespace CapstoneProject
     // Application Type: Console                                                                            *
     // Author: Cameron Carlson                                                                              *
     // Dated Created: 4/11/2021                                                                             *
-    // Last Modified: 4/12/2021                                                                             *
+    // Last Modified: 4/18/2021                                                                             *
     //                                                                                                      *
     // ******************************************************************************************************
     class Program
@@ -53,12 +53,53 @@ namespace CapstoneProject
             Console.ForegroundColor = ConsoleColor.DarkBlue;
             Console.BackgroundColor = ConsoleColor.Gray;
             Console.CursorVisible = true;
+            bool isDone;
 
             DisplayWelcomeScreen();
-            List<string> phrase = null;
-            phrase = DisplayGetPhraseFromUser();
-            DisplayStartGame(phrase);
-            DisplayClosingScreen();
+            do
+            {
+                List<string> phrase = null;
+                phrase = DisplayGetPhraseFromUser();
+                DisplayStartGame(phrase);
+                DisplayClosingScreen();
+                isDone = DisplayAskToPlayAgain();
+            } while (isDone);
+        }
+
+        /// <summary>
+        /// ask user to play again
+        /// </summary>
+        /// <returns></returns>
+        static bool DisplayAskToPlayAgain()
+        {
+            string userResponse;
+            bool isDone = true;
+            bool validResponse;
+            DisplayScreenHeader("Play Again?");
+            Console.WriteLine();
+            Console.WriteLine("Do you want to play again? [yes or no]");
+            do
+            {
+                validResponse = true;
+                userResponse = Console.ReadLine().ToLower();
+                if (userResponse == "yes")
+                {
+                    isDone = false;
+                }
+                else if (userResponse == "no")
+                {
+                    isDone = true;
+                }
+                else
+                {
+                    Console.WriteLine("\tPlease enter Yes or No");
+                    validResponse = false;
+                }
+            } while (!validResponse);
+
+            DisplayContinuePrompt();
+
+            return isDone;
         }
 
         /// <summary>
